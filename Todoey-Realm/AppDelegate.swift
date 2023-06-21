@@ -13,16 +13,26 @@ import RealmSwift
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-//		print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as String) --> User Defaults location
-//		print("didFinishLaunchingWithOptions")
-//		print(#function)
+
+		print(Realm.Configuration.defaultConfiguration.fileURL!)
 		
+		let data = Data()
+		data.name = "Ramón"
+		data.age = 30
+		
+		do {
+			
+			let realm = try Realm()
+			try realm.write {
+				realm.add(data)
+			}
+		} catch {
+			print("Error initialising new realm, \(error)")
+		}
 		return true
 	}
 	
 	func applicationWillTerminate(_ application: UIApplication) {
-//		print("applicationWillTerminate")
-//		print(#function)
 		
 		self.saveContext()
 	}
