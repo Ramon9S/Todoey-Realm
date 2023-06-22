@@ -1,30 +1,22 @@
 //
 //  CategoryTableViewController.swift
-//  Todoey
+//  Todoey-Realm
 //
 //  Created by Ramon Seoane Martin on 17/6/23.
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
 class CategoryTableViewController: UITableViewController {
 
-	// File path to the documents folder
-	let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+	// Should not fail due to previous initialisation of Realm
+	let realm = try! Realm()
 	
-	var categoryArray = [Category]()
-	
-	// Context to interact with the DB's persistent container
-	let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext /// Access AppDelegate singleton
-	
+	var categoryArray: Results<Category>?
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-
-		print()
-		print(dataFilePath)
-		print()
 		
 		loadCategories()
     }
@@ -32,18 +24,16 @@ class CategoryTableViewController: UITableViewController {
 	//MARK: - Add New Category
 	@IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
 		
-		
 		var textField = UITextField()
 		let alert = UIAlertController(title: "Add new Todoey Category", message: "", preferredStyle: .alert)
+		
 		let action = UIAlertAction(title: "Add Category", style: .default) { (action) in
 			
 			// Whatever happens once the Add Category buttom on our UIAlert is pressed
-			let newCategory = Category(context: self.context)
+			let newCategory = Category()
 			newCategory.name = textField.text!
 			
-			self.categoryArray.append(newCategory) /// add to the Items Array
-			
-			self.saveCategories()
+			self.saveCategories(category: newCategory)
 		}
 		
 		// Add a textfield to the alert
@@ -61,15 +51,15 @@ class CategoryTableViewController: UITableViewController {
 	
 	//MARK: - TableView DataSource Methods
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return categoryArray.count
+		
+		return categoryArray?.count ?? 1
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
 		let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
-		let category = categoryArray[indexPath.row]
 
-		cell.textLabel?.text = category.name
+		cell.textLabel?.text = categoryArray?[indexPath.row].name ?? "No Categories Added Yet"
 				
 		return cell
 	}
@@ -90,30 +80,30 @@ class CategoryTableViewController: UITableViewController {
 		
 		if let indexPath = tableView.indexPathForSelectedRow {
 			
-			destinationVC.selectedCategory = categoryArray[indexPath.row]
+			destinationVC.selectedCategory = categoryArray?[indexPath.row]
 		}
 	}
 	
 	
 	//MARK: - Model Manipulation Methods
-	func saveCategories() {
+	func saveCategories(category: Category) {
 		
+		// C from CRUD in Realm
 		do {
-			try context.save()
+			try realm.write {
+				realm.add(category)
+			}
 		} catch {
-			print("Error saving context, \(error)")
+			print("Error saving category, \(error)")
 		}
 		
 		self.tableView.reloadData()
 	}
 	
-	func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
+	func loadCategories() {
 
-		do{
-			categoryArray = try context.fetch(request)
-		} catch {
-			print("Error fetching data from context \(error)")
-		}
+		// R from CRUD in Realm
+		categoryArray = realm.objects(Category.self)
 		
 		self.tableView.reloadData()
 	}
