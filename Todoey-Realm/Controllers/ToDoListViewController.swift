@@ -8,10 +8,11 @@
 import UIKit
 import RealmSwift
 
-class ToDoListViewController: UITableViewController {
-	
-	var toDoItems: Results<Item>?
+class ToDoListViewController: SwipeTableViewController {
+
+	// Should not fail due to previous initialisation of Realm
 	let realm = try! Realm()
+	var toDoItems: Results<Item>?
 	
 	
 	var selectedCategory: Category? {
@@ -23,7 +24,7 @@ class ToDoListViewController: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view.
-		
+		tableView.rowHeight = 65
 	}
 
 	
@@ -35,7 +36,7 @@ class ToDoListViewController: UITableViewController {
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
+		let cell = super.tableView(tableView, cellForRowAt: indexPath)
 		
 		if let item = toDoItems?[indexPath.row] {
 			
@@ -128,12 +129,33 @@ class ToDoListViewController: UITableViewController {
 
 	//MARK: - Model Manipulation Methods
 	
+	//MARK: - Load Items Data From Realm DB
 	func loadItems() {
 
 		// R from CRUD in Realm
 		toDoItems = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
 		
 		self.tableView.reloadData()
+	}
+	
+	//MARK: - Delete Category Data From Swipe
+	override func updateModel(at indexPath: IndexPath) {
+		
+		super.updateModel(at: indexPath) // If needed for superclass code execution
+		
+		if let item = self.toDoItems?[indexPath.row] {
+			
+			// U from CRUD in Realm --> similar to C = create = write
+			do {
+				try self.realm.write {
+					
+					// D from CRUD in Realm --> inside write to update de DB
+					self.realm.delete(item)
+				}
+			} catch {
+				print("Error deleting item, \(error)")
+			}
+		}
 	}
 }
 

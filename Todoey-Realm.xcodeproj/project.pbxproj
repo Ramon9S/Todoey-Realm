@@ -15,6 +15,7 @@
 		1269467A2A435F950051F65F /* CategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1269466E2A435F950051F65F /* CategoryTableViewController.swift */; };
 		1269467B2A435F950051F65F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 126946702A435F950051F65F /* Main.storyboard */; };
 		1269467D2A435F950051F65F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126946732A435F950051F65F /* SceneDelegate.swift */; };
+		127E334C2A4604CF005DCB81 /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E334B2A4604CF005DCB81 /* SwipeTableViewController.swift */; };
 		12DEDF9E2A448CB100A8226B /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DEDF9D2A448CB100A8226B /* Category.swift */; };
 		45E651304CB7B8B5F250573C /* Pods_Todoey_Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940ADFA77AB74F9E94CD5A4F /* Pods_Todoey_Realm.framework */; };
 /* End PBXBuildFile section */
@@ -29,6 +30,7 @@
 		126946712A435F950051F65F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		126946722A435F950051F65F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Todoey-Realm/Info.plist"; sourceTree = SOURCE_ROOT; };
 		126946732A435F950051F65F /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		127E334B2A4604CF005DCB81 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
 		129A6F692A2B542600551588 /* Todoey-Realm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Todoey-Realm.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		12DEDF9D2A448CB100A8226B /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		476556B2A18D0F91337D90C6 /* Pods-Todoey-Realm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Todoey-Realm.debug.xcconfig"; path = "Target Support Files/Pods-Todoey-Realm/Pods-Todoey-Realm.debug.xcconfig"; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 			children = (
 				1269466E2A435F950051F65F /* CategoryTableViewController.swift */,
 				1269466D2A435F950051F65F /* ToDoListViewController.swift */,
+				127E334B2A4604CF005DCB81 /* SwipeTableViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -251,6 +254,7 @@
 				126946782A435F950051F65F /* AppDelegate.swift in Sources */,
 				126946742A435F950051F65F /* Item.swift in Sources */,
 				1269467D2A435F950051F65F /* SceneDelegate.swift in Sources */,
+				127E334C2A4604CF005DCB81 /* SwipeTableViewController.swift in Sources */,
 				1269467A2A435F950051F65F /* CategoryTableViewController.swift in Sources */,
 				126946792A435F950051F65F /* ToDoListViewController.swift in Sources */,
 				12DEDF9E2A448CB100A8226B /* Category.swift in Sources */,

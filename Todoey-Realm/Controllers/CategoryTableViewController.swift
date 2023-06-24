@@ -8,19 +8,22 @@
 import UIKit
 import RealmSwift
 
-class CategoryTableViewController: UITableViewController {
-
+class CategoryTableViewController: SwipeTableViewController {
+	
 	// Should not fail due to previous initialisation of Realm
 	let realm = try! Realm()
 	
 	var categoryArray: Results<Category>?
 	
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		
+		tableView.rowHeight = 80
 		
 		loadCategories()
-    }
-
+	}
+	
+	
 	//MARK: - Add New Category
 	@IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
 		
@@ -57,13 +60,12 @@ class CategoryTableViewController: UITableViewController {
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
-
+		let cell = super.tableView(tableView, cellForRowAt: indexPath)
+		
 		cell.textLabel?.text = categoryArray?[indexPath.row].name ?? "No Categories Added Yet"
-				
+		
 		return cell
 	}
-	
 	
 	
 	//MARK: - TableView Delegate Methods
@@ -86,6 +88,8 @@ class CategoryTableViewController: UITableViewController {
 	
 	
 	//MARK: - Model Manipulation Methods
+	
+	//MARK: - Save Category Data To Realm DB
 	func saveCategories(category: Category) {
 		
 		// C from CRUD in Realm
@@ -100,14 +104,32 @@ class CategoryTableViewController: UITableViewController {
 		self.tableView.reloadData()
 	}
 	
+	//MARK: - Load Category Data From Realm DB
 	func loadCategories() {
-
+		
 		// R from CRUD in Realm
 		categoryArray = realm.objects(Category.self)
 		
 		self.tableView.reloadData()
 	}
 	
-	
-	
+	//MARK: - Delete Category Data From Swipe
+	override func updateModel(at indexPath: IndexPath) {
+		
+		super.updateModel(at: indexPath) // If needed for superclass code execution
+		
+		if let category = self.categoryArray?[indexPath.row] {
+			
+			// U from CRUD in Realm --> similar to C = create = write
+			do {
+				try self.realm.write {
+					
+					// D from CRUD in Realm --> inside write to update de DB
+					self.realm.delete(category)
+				}
+			} catch {
+				print("Error deleting category, \(error)")
+			}
+		}
+	}
 }
