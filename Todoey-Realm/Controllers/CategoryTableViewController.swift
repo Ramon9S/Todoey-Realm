@@ -7,6 +7,7 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 class CategoryTableViewController: SwipeTableViewController {
 	
@@ -18,9 +19,30 @@ class CategoryTableViewController: SwipeTableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		tableView.rowHeight = 80
+		setupUI()
 		
 		loadCategories()
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		
+		guard let navBar = navigationController?.navigationBar else { fatalError("Navigation Controller does not exist.") }
+
+		let originalColour = UIColor(hexString: "1D9BF6")
+		let contrastColour = ContrastColorOf(originalColour!, returnFlat: true)
+		
+		navBar.backgroundColor = originalColour
+		navBar.tintColor = contrastColour
+		navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor : contrastColour]
+		
+	}
+	
+	
+	//MARK: - Private Functions
+	func setupUI() {
+		
+		tableView.rowHeight = 80
+		tableView.separatorStyle = .none
 	}
 	
 	
@@ -35,6 +57,7 @@ class CategoryTableViewController: SwipeTableViewController {
 			// Whatever happens once the Add Category buttom on our UIAlert is pressed
 			let newCategory = Category()
 			newCategory.name = textField.text!
+			newCategory.color = UIColor.randomFlat().hexValue()
 			
 			self.saveCategories(category: newCategory)
 		}
@@ -62,7 +85,16 @@ class CategoryTableViewController: SwipeTableViewController {
 		
 		let cell = super.tableView(tableView, cellForRowAt: indexPath)
 		
-		cell.textLabel?.text = categoryArray?[indexPath.row].name ?? "No Categories Added Yet"
+		if let category = categoryArray?[indexPath.row] {
+			
+			cell.textLabel?.text = category.name
+			
+			guard let categoryColor = UIColor(hexString: category.color) else { fatalError() }
+			
+			cell.backgroundColor = categoryColor
+			
+			cell.textLabel?.textColor = ContrastColorOf(categoryColor, returnFlat: true)
+		}
 		
 		return cell
 	}
@@ -124,8 +156,16 @@ class CategoryTableViewController: SwipeTableViewController {
 			do {
 				try self.realm.write {
 					
-					// D from CRUD in Realm --> inside write to update de DB
-					self.realm.delete(category)
+					// First we delete the items of this category, then the category itself
+					if let items = self.categoryArray?[indexPath.row].items {
+						
+						items.forEach { item in
+							self.realm.delete(item)
+						}
+						
+						// Finally we delete the category ==> D from CRUD in Realm --> inside write to update de DB
+						self.realm.delete(category)
+					}
 				}
 			} catch {
 				print("Error deleting category, \(error)")

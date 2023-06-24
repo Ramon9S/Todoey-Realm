@@ -41,12 +41,14 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Items" id="hJb-62-Nfi">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="QAn-l9-TlQ">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="addButtonPressed:" destination="nE5-Tp-TK6" id="aqq-mG-138"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="searchBar" destination="Gz4-mf-4Sn" id="geH-g7-Owd"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vgx-C6-acF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -57,8 +59,8 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="gJM-NB-QZG" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wav-Ek-cBq">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="wav-Ek-cBq">
+                        <rect key="frame" x="0.0" y="59" width="393" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" systemColor="systemBlueColor"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -76,7 +78,7 @@
             </objects>
             <point key="canvasLocation" x="629.7709923664122" y="-13.380281690140846"/>
         </scene>
-        <!--Todoey-Realm-->
+        <!--Todoey-->
         <scene sceneID="TEP-sx-Lku">
             <objects>
                 <tableViewController id="TEf-Ri-oNl" customClass="CategoryTableViewController" customModule="Todoey_Realm" customModuleProvider="target" sceneMemberID="viewController">
@@ -99,9 +101,8 @@
                             <outlet property="delegate" destination="TEf-Ri-oNl" id="n6k-aZ-YIE"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Todoey-Realm" id="FDg-uS-yX0">
+                    <navigationItem key="navigationItem" title="Todoey" id="FDg-uS-yX0">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="TfA-cG-yaq">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="addButtonPressed:" destination="TEf-Ri-oNl" id="TaO-8h-yU0"/>
                             </connections>
